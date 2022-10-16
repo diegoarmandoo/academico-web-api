@@ -1,0 +1,113 @@
+@startuml Academico
+
+    Class Endereco {
+        - int id
+        - int CEP
+        - String rua
+        - String bairro
+        - String cidade
+        - String estado
+    }
+
+    abstract Class Pessoa {
+        - int matricula
+        - String nome
+        - String sobrenome
+        - int idade
+        - String naturalidade
+        - char sexo
+        - String cpf
+        - Endereco endereco
+
+        + {abstract} int gerarMatricula()
+    }
+
+    Class Nota {
+        - double valor
+        - int peso
+    }
+
+    Class Aluno {
+        - String curso 
+        - boolean estaMatriculado
+        - double media
+        - double mediaPonderada
+        - boolean aprovado
+        - String situacao
+        - List<Nota> notas
+        - {static} int quantidadeAlunos
+        - {static} String nomeInstituicao
+
+        + int gerarMatricula()
+        + void calcularMediaAritimetica()
+        + void calcularMediaPonderada()
+        - void verificarSituaco()
+    }
+
+    Class Professor {
+        - double salario
+        - int cargaHoraria
+        
+        + int gerarMatricula()
+    }
+
+    Class Disciplina {
+        - String nome
+        - int cargaHoraria
+    }
+
+    Class Sala {
+        - int numero
+        - int capacidade
+        - boolean arCondicionado
+        - boolean quadroBranco
+        - boolean laboratorio
+    }
+
+    Class Turma {
+        - String nome
+        - String periodo
+        - double media
+        - Professor professor
+        - Disciplina disciplina
+        - List<Aluno> alunos
+        - List<Sala> salas
+
+        + void calcularMediaTurma()
+    }
+
+    interface IProjeto #aliceblue ##[dotted]blue {
+
+        + void submeterProjetoPesquisa()
+        + void submeterProjetoExtensao()
+
+    }
+
+    interface IEvento #aliceblue ##[dotted]blue {
+
+        + void inscrever()
+    }
+
+    enum SituacaoAluno {
+        Aprovado
+        Recuperacao
+        Reprovado
+    }
+
+    Pessoa <|-- Aluno
+    Pessoa <|-- Professor
+    Pessoa o-- "0..1" Endereco : contém >
+
+    Aluno *-- "2..4" Nota : contém >
+
+    Turma o-- "1..1" Professor : contém >
+    Turma o-- "1..1" Disciplina : contém >
+    Turma o-- "1..30" Aluno : contém >
+    Turma o-- "1..*" Sala : contém >
+
+    IProjeto <|.. Professor
+    IProjeto <|.. Aluno
+    IEvento <|.. Professor
+    IEvento <|.. Aluno
+
+@enduml
