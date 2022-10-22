@@ -1,0 +1,12 @@
+@host = localhost
+@port = 8080
+@pathproject = academico-web-api
+
+### Lista todos os endereços
+GET http://{{host}}:{{port}}/{{pathproject}}/enderecos
+
+### Busca um endereço específico por ID
+GET http://{{host}}:{{port}}/{{pathproject}}/enderecos/13
+
+### Cria um endereço a partir de um JSON
+POST http://{{host}}:{{port}}/{{pathproject}}/enderecos
