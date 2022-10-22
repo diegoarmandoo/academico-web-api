@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -39,6 +41,26 @@ public class EnderecoResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response criar(Endereco endereco){
-        return Response.ok(endereco, MediaType.APPLICATION_JSON).build();
+        endereco.setId(200);
+        return Response
+            .status(Response.Status.CREATED)
+            .entity(endereco)
+            .build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response atualizar(Endereco endereco){
+        return Response
+            .status(Response.Status.NO_CONTENT)
+            .build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deletar(@PathParam("id") int id){
+        return Response
+            .status(Response.Status.NO_CONTENT)
+            .build();
     }
 }
