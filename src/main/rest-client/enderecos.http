@@ -8,5 +8,30 @@ GET http://{{host}}:{{port}}/{{pathproject}}/enderecos
 ### Busca um endereço específico por ID
 GET http://{{host}}:{{port}}/{{pathproject}}/enderecos/13
 
-### Cria um endereço a partir de um JSON
+### Criar um endereço
 POST http://{{host}}:{{port}}/{{pathproject}}/enderecos
+Content-type: application/json 
+
+{
+    "CEP": 490000,
+    "bairro": "Centro",
+    "cidade": "Itabaiana",
+    "estado": "Sergipe",
+    "rua": "Rua da Feira"
+}
+
+### Atualizar todos os atributos de um endereço
+PUT http://{{host}}:{{port}}/{{pathproject}}/enderecos
+content-type: application/json
+
+{
+    "id": 200,
+    "CEP": 491000,
+    "bairro": "Centro",
+    "cidade": "Lagarto",
+    "estado": "Sergipe",
+    "rua": "Rua da Feira"
+}
+
+### Deletar um endereço
+DELETE http://{{host}}:{{port}}/{{pathproject}}/enderecos/13
