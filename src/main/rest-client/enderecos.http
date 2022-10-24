@@ -21,11 +21,10 @@ Content-type: application/json
 }
 
 ### Atualizar todos os atributos de um endereço
-PUT http://{{host}}:{{port}}/{{pathproject}}/enderecos
+PUT http://{{host}}:{{port}}/{{pathproject}}/enderecos/100
 content-type: application/json
 
 {
-    "id": 200,
     "CEP": 491000,
     "bairro": "Centro",
     "cidade": "Lagarto",
@@ -35,3 +34,9 @@ content-type: application/json
 
 ### Deletar um endereço
 DELETE http://{{host}}:{{port}}/{{pathproject}}/enderecos/13
+
+### Ativar/Desativar um endereço - Não CRUD
+PUT http://{{host}}:{{port}}/{{pathproject}}/enderecos/100/status
+Content-Type: text/plain
+
+ATIVO
