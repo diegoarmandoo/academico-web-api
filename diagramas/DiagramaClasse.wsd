@@ -1,5 +1,10 @@
 @startuml Academico
 
+    enum StatusEndereco {
+        ATIVO 
+        DESATIVO
+    }
+
     Class Endereco {
         - int id
         - int CEP
@@ -7,6 +12,7 @@
         - String bairro
         - String cidade
         - String estado
+        - StatusEndereco status
     }
 
     abstract Class Pessoa {
@@ -109,5 +115,7 @@
     IProjeto <|.. Aluno
     IEvento <|.. Professor
     IEvento <|.. Aluno
+
+   Endereco o-- "1..1" StatusEndereco : contém >
 
 @enduml
