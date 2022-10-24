@@ -19,6 +19,10 @@ public class EnderecoResource {
     
     private Endereco endereco;
 
+    //////////////////
+    //Operações CRUD//
+    //////////////////
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)   
     public Response recuperar() {
@@ -49,8 +53,9 @@ public class EnderecoResource {
     }
 
     @PUT
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response atualizar(Endereco endereco){
+    public Response atualizar(@PathParam("id") int id, Endereco endereco){
         return Response
             .status(Response.Status.NO_CONTENT)
             .build();
@@ -63,4 +68,22 @@ public class EnderecoResource {
             .status(Response.Status.NO_CONTENT)
             .build();
     }
+
+    //////////////////////
+    //Operações Não CRUD//
+    //////////////////////
+
+    @PUT
+    @Path("{id}/status")
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response mudarStatus(@PathParam("id") int id, String status){
+        endereco = new Endereco();
+        endereco.setId(id);
+        endereco.setStatus(StatusEndereco.fromString(status));
+        return Response
+            .status(Response.Status.OK)
+            .entity(endereco)
+            .build();
+    }
+
 }
