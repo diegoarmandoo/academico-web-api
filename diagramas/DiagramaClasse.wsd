@@ -58,11 +58,13 @@
     }
 
     Class Disciplina {
+        - int id
         - String nome
         - int cargaHoraria
     }
 
     Class Sala {
+        - int id
         - int numero
         - int capacidade
         - boolean arCondicionado
