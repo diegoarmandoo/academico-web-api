@@ -97,4 +97,16 @@ public class EnderecoResourceTest extends JerseyTest {
         assertEquals("O codigo de status HTTP da resposta deve ser 204: ", Status.NO_CONTENT.getStatusCode(), response.getStatus());
     }
 
+    @Test
+    public void teste_atlerar_status_endereco_por_id() {
+        String status = "ATIVO";
+
+        Response response = target("/enderecos/100/status").request().put(Entity.entity(status, MediaType.TEXT_PLAIN));
+        Endereco endereco = response.readEntity(new GenericType<Endereco>() {});
+        
+        assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
+        assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
+        assertTrue("O conteúdo da resposta deve ser um Endereço: ", endereco instanceof Endereco);
+    }
+
 }
