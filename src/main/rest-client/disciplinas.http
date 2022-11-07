@@ -1,0 +1,30 @@
+@host = localhost
+@port = 8080
+@pathproject = academico-web-api
+
+### Lista todos as disciplinas
+GET http://{{host}}:{{port}}/{{pathproject}}/disciplinas
+
+### Busca uma disciplina específica por ID
+GET http://{{host}}:{{port}}/{{pathproject}}/disciplinas/134
+
+### Criar uma disciplina
+POST http://{{host}}:{{port}}/{{pathproject}}/disciplinas
+Content-type: application/json 
+
+{
+    "nome":"Tópicos Especiais III",
+    "cargaHoraria": 100
+}
+
+### Atualizar todos os atributos de uma disciplina
+PUT http://{{host}}:{{port}}/{{pathproject}}/disciplinas/123
+content-type: application/json
+
+{
+    "nome":"Programação I",
+    "cargaHoraria": 230
+}
+
+### Deletar uma disciplina
+DELETE http://{{host}}:{{port}}/{{pathproject}}/disciplinas/123
