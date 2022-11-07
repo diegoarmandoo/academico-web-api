@@ -1,0 +1,36 @@
+@host = localhost
+@port = 8080
+@pathproject = academico-web-api
+
+### Lista todos as salas
+GET http://{{host}}:{{port}}/{{pathproject}}/salas
+
+### Busca uma sala específica por ID
+GET http://{{host}}:{{port}}/{{pathproject}}/salas/250
+
+### Criar uma sala
+POST http://{{host}}:{{port}}/{{pathproject}}/salas
+Content-type: application/json 
+
+{
+    "numero":11,
+    "capacidade":35,
+    "arCondicionado":true,
+    "quadroBranco":false,
+    "laboratorio":true
+}
+
+### Atualizar todos os atributos de uma sala
+PUT http://{{host}}:{{port}}/{{pathproject}}/salas/05
+content-type: application/json
+
+{
+    "numero":10,
+    "capacidade":35,
+    "arCondicionado":true,
+    "quadroBranco":true,
+    "laboratorio":true
+}
+
+### Deletar uma disciplina
+DELETE http://{{host}}:{{port}}/{{pathproject}}/disciplinas/123
