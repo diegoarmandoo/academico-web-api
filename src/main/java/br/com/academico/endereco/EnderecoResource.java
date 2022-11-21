@@ -14,7 +14,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Path("/enderecos")
+@Tag(name = "Endereços")
 public class EnderecoResource {
     
     private Endereco endereco;
@@ -24,7 +31,11 @@ public class EnderecoResource {
     //////////////////
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)   
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Listar Endereços",
+        description = "Recupera uma lista completa de endereços com todos os dados"
+	) 
     public Response recuperar() {
         List<Endereco> listaEnderecos = new ArrayList<Endereco>();
         listaEnderecos.add(new Endereco(49000, "Rua A", "Centro", "Aracaju", "Sergipe"));
@@ -35,6 +46,10 @@ public class EnderecoResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Recuperar Endereço",
+        description = "Recupera apenas um endereço a partir de seu id"
+    )
     public Response recuperar(@PathParam("id") int id) {
         endereco = new Endereco(43000, "Rua B", "Centro", "Tobias Barreto", "Sergipe");
         endereco.setId(id);
@@ -44,6 +59,10 @@ public class EnderecoResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Criar Endereço",
+        description = "Cria um endereço completo"
+    )
     public Response criar(Endereco endereco){
         endereco.setId(200);
         return Response
@@ -55,6 +74,10 @@ public class EnderecoResource {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(
+        summary = "Criar Endereço",
+        description = "Cria um endereço completo"
+    )
     public Response atualizar(@PathParam("id") int id, Endereco endereco){
         return Response
             .status(Response.Status.NO_CONTENT)
@@ -63,6 +86,10 @@ public class EnderecoResource {
 
     @DELETE
     @Path("{id}")
+    @Operation(
+        summary = "Deletar Endereço",
+        description = "Deleta apenas um endereço a partir de seu id"
+    )
     public Response deletar(@PathParam("id") int id){
         return Response
             .status(Response.Status.NO_CONTENT)
@@ -76,6 +103,17 @@ public class EnderecoResource {
     @PUT
     @Path("{id}/status")
     @Consumes(MediaType.TEXT_PLAIN)
+    @Operation(
+        summary = "Atualizar Status do Endereço",
+        description = "Ativa ou desativa o status do endereço",
+        requestBody = @RequestBody(
+            description = "Status do endereço", 
+			required = true,
+            content = @Content(
+                schema = @Schema(implementation = StatusEndereco.class)
+            )
+        )
+    )
     public Response mudarStatus(@PathParam("id") int id, String status){
         endereco = new Endereco();
         endereco.setId(id);

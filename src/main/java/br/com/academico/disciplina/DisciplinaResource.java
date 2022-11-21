@@ -14,7 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @Path("/disciplinas")
+@Tag(name = "Disciplinas")
 public class DisciplinaResource {
     
     private Disciplina disciplina;
