@@ -3,7 +3,9 @@ package br.com.academico.config;
 import java.io.IOException;
 import java.net.URI;
 
+import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.ServerConfiguration;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -22,6 +24,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         final HttpServer server = startServer();
+
+        //Configurando o site do swagger na Web API
+        ClassLoader loader = Main.class.getClassLoader();
+        CLStaticHttpHandler docsHandler = new CLStaticHttpHandler(loader, "swagger-ui/");
+        docsHandler.setFileCacheEnabled(false);
+        ServerConfiguration cfg = server.getServerConfiguration();
+        cfg.addHttpHandler(docsHandler, "/academico-web-api-docs/");
 
         System.out.println("-------------------------------------");    
 		System.out.println("Servidor Iniciado");  
