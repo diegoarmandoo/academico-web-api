@@ -45,6 +45,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Jersey / JAX-RS -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
@@ -58,6 +59,7 @@
             <artifactId>jersey-media-json-binding</artifactId>
         </dependency>
 
+        <!-- Jersey Test Framework -->
         <dependency>
             <groupId>org.glassfish.jersey.test-framework</groupId>
             <artifactId>jersey-test-framework-core</artifactId>
@@ -68,6 +70,16 @@
 		    <artifactId>jersey-test-framework-provider-simple</artifactId>
 		    <version>${jersey.version}</version>
 	    </dependency>
+
+        <!-- Grizzly | Embedded Web Container -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+        </dependency>    
 
     </dependencies>
     <properties>
