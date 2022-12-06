@@ -3,12 +3,16 @@ package br.com.academico.endereco;
 import org.glassfish.jersey.test.JerseyTest;
 
 import org.junit.Test;
+
+import br.com.academico.exception.AcademicoExceptionMapper;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.TestProperties;
 
 import javax.json.Json;
@@ -26,7 +30,9 @@ public class EnderecoResourceTest extends JerseyTest {
 	protected Application configure() {
 		enable(TestProperties.LOG_TRAFFIC);
 		enable(TestProperties.DUMP_ENTITY);
-		return new ResourceConfig(EnderecoResource.class);
+		return new ResourceConfig(EnderecoResource.class)
+            .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
+            .register(AcademicoExceptionMapper.class);
 	}
 
     @Test
@@ -57,7 +63,7 @@ public class EnderecoResourceTest extends JerseyTest {
     @Test
     public void teste_criar_endereco() {
         String enderecoJSON = Json.createObjectBuilder()
-            .add("CEP", 49000)
+            .add("CEP", 49000000)
             .add("bairro", "Centro")
             .add("cidade", "Aracaju")
             .add("estado", "Sergipe")
@@ -107,6 +113,63 @@ public class EnderecoResourceTest extends JerseyTest {
         assertEquals("O codigo de status HTTP da resposta deve ser 200: ", Status.OK.getStatusCode(), response.getStatus());
         assertEquals("O tipo de conteúdo HTTP da resposta deve ser JSON: ", MediaType.APPLICATION_JSON, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
         assertTrue("O conteúdo da resposta deve ser um Endereço: ", endereco instanceof Endereco);
+    }
+
+    @Test
+    public void teste_criar_endereco_sem_rua(){
+        String enderecoJSON = Json.createObjectBuilder()
+            .add("CEP", 49000000)
+            .add("bairro", "Centro")
+            .add("cidade", "Aracaju")
+            .add("estado", "Sergipe")
+            .add("rua", "")
+            .build()
+            .toString();
+
+        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
+        String msg = response.readEntity(String.class); 
+        
+        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
+        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
+        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo rua não pode ser nulo nem vazio."));
+    }
+
+    @Test
+    public void teste_criar_endereco_rua_tamanho_invalido() {
+        String enderecoJSON = Json.createObjectBuilder()
+            .add("CEP", 49000000)
+            .add("bairro", "Centro")
+            .add("cidade", "Aracaju")
+            .add("estado", "Sergipe")
+            .add("rua", "Rua")
+            .build()
+            .toString();
+
+        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
+        String msg = response.readEntity(String.class);
+     
+        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
+        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
+        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres."));
+    }
+
+    @Test
+    public void teste_criar_endereco_com_cep_invalido() {
+        String enderecoJSON = Json.createObjectBuilder()
+            .add("CEP", 8975)
+            .add("bairro", "Centro")
+            .add("cidade", "Aracaju")
+            .add("estado", "Sergipe")
+            .add("rua", "Rua Treze")
+            .build()
+            .toString();
+
+        Response response = target("/enderecos").request().post(Entity.json(enderecoJSON));
+        String msg = response.readEntity(String.class);
+     
+        assertEquals("O codigo de status HTTP da resposta deve ser 422: ", 422, response.getStatus());
+        assertEquals("O tipo de conteúdo HTTP da resposta deve ser texto plano: ", MediaType.TEXT_PLAIN, response.getHeaderString(HttpHeaders.CONTENT_TYPE));
+        assertTrue("O conteúdo da resposta deve conter uma mensagem de validação pré-definida: ", msg.contains("O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos."));
     }
 
 }
