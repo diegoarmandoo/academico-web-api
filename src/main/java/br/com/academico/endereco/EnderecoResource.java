@@ -3,6 +3,7 @@ package br.com.academico.endereco;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -63,7 +64,7 @@ public class EnderecoResource {
         summary = "Criar Endereço",
         description = "Cria um endereço completo"
     )
-    public Response criar(Endereco endereco){
+    public Response criar(@Valid Endereco endereco){
         endereco.setId(200);
         return Response
             .status(Response.Status.CREATED)
