@@ -2,11 +2,15 @@ package br.com.academico.disciplina;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Pattern;
+
 public class Disciplina implements Serializable {
 
     // Atributos de Instância ou do Objeto
 
     private int id;
+
+    @Pattern(regexp="[0-9]{4}-[A-Z]*", message = "O atributo nome da disciplina é inválido.")
     private String nome;
     private int cargaHoraria;
 
