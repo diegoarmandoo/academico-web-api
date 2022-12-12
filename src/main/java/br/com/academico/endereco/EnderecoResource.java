@@ -27,6 +27,8 @@ public class EnderecoResource {
     
     private Endereco endereco;
 
+    private EnderecoService enderecoService = new EnderecoService();
+
     //////////////////
     //Operações CRUD//
     //////////////////
@@ -39,8 +41,15 @@ public class EnderecoResource {
 	) 
     public Response recuperar() {
         List<Endereco> listaEnderecos = new ArrayList<Endereco>();
-        listaEnderecos.add(new Endereco(49000, "Rua A", "Centro", "Aracaju", "Sergipe"));
-		listaEnderecos.add(new Endereco(49700, "Rua C", "Atalaia", "Aracaju", "Sergipe"));
+        try {
+            listaEnderecos = enderecoService.listar();
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(e.getMessage())
+                .type("text/plain")
+                .build();
+        }
         return Response.ok(listaEnderecos, MediaType.APPLICATION_JSON).build();
     }
 
@@ -52,8 +61,16 @@ public class EnderecoResource {
         description = "Recupera apenas um endereço a partir de seu id"
     )
     public Response recuperar(@PathParam("id") int id) {
-        endereco = new Endereco(43000, "Rua B", "Centro", "Tobias Barreto", "Sergipe");
-        endereco.setId(id);
+        Endereco endereco;
+        try {
+            endereco = enderecoService.recuperar(id);
+        } catch (Exception e) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response.ok(endereco, MediaType.APPLICATION_JSON).build();
     }
 
@@ -65,7 +82,17 @@ public class EnderecoResource {
         description = "Cria um endereço completo"
     )
     public Response criar(@Valid Endereco endereco){
-        endereco.setId(200);
+        int id;
+        try {
+            id = enderecoService.criar(endereco);
+            endereco.setId(id);
+        } catch (Exception e) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response
             .status(Response.Status.CREATED)
             .entity(endereco)
@@ -80,6 +107,15 @@ public class EnderecoResource {
         description = "Cria um endereço completo"
     )
     public Response atualizar(@PathParam("id") int id, Endereco endereco){
+        try {
+            endereco = enderecoService.atualizar(id, endereco);
+        } catch (Exception e) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response
             .status(Response.Status.NO_CONTENT)
             .build();
@@ -92,6 +128,15 @@ public class EnderecoResource {
         description = "Deleta apenas um endereço a partir de seu id"
     )
     public Response deletar(@PathParam("id") int id){
+        try {
+            enderecoService.deletar(id);
+        } catch (Exception e) {
+           return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response
             .status(Response.Status.NO_CONTENT)
             .build();
@@ -116,9 +161,15 @@ public class EnderecoResource {
         )
     )
     public Response mudarStatus(@PathParam("id") int id, String status){
-        endereco = new Endereco();
-        endereco.setId(id);
-        endereco.setStatus(StatusEndereco.fromString(status));
+        try {
+            endereco = enderecoService.mudarStatus(id, StatusEndereco.fromString(status));
+        } catch (Exception e) {
+            return Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(e.getMessage())
+                    .type("text/plain")
+                    .build();
+        }
         return Response
             .status(Response.Status.OK)
             .entity(endereco)
