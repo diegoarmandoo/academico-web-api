@@ -13,19 +13,35 @@ public class EnderecoService {
     }
 
     public Endereco recuperar(int id) {
-        Endereco endereco = new Endereco(88888, "Rua B", "Centro", "Tobias Barreto", "Sergipe");
-        endereco.setId(id);
+        Endereco endereco;
+        if (id != 999){
+            endereco = new Endereco(88888, "Rua B", "Centro", "Tobias Barreto", "Sergipe");
+            endereco.setId(id);
+        }
+        else {
+            throw new EnderecoNaoExisteException();
+        }
         return endereco;
     }
 
     public int criar(Endereco endereco) {
-        endereco.setId(200);
+        if (endereco.getCEP() != 88888) {
+            endereco.setId(200);
+        }
+        else {
+            throw new CEPEnderecoInvalidoException();
+        }
         return endereco.getId();
     }
 
     public Endereco atualizar(int id, Endereco endereco) {
-        endereco.setId(id);
-        endereco.setRua("Rua Nova");
+        if (id != 999) {
+            endereco.setId(id);
+            endereco.setRua("Rua Nova");
+        }
+        else {
+            throw new EnderecoNaoExisteException();            
+        }
         return endereco;
     }
 
