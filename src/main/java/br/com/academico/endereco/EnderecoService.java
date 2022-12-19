@@ -3,7 +3,12 @@ package br.com.academico.endereco;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnderecoService {
+import javax.inject.Named;
+
+import org.jvnet.hk2.annotations.Service;
+
+@Service @Named("enderecoservicedefault")
+public class EnderecoService implements IEnderecoService {
     
     public List<Endereco> listar(){
         List<Endereco> listaEnderecos = new ArrayList<Endereco>();
