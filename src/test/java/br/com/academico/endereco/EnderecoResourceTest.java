@@ -4,6 +4,7 @@ import org.glassfish.jersey.test.JerseyTest;
 
 import org.junit.Test;
 
+import br.com.academico.config.AutoScanIoCFeature;
 import br.com.academico.exception.AcademicoExceptionMapper;
 
 import static org.junit.Assert.assertEquals;
@@ -11,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.TestProperties;
@@ -32,7 +34,8 @@ public class EnderecoResourceTest extends JerseyTest {
 		enable(TestProperties.DUMP_ENTITY);
 		return new ResourceConfig(EnderecoResource.class)
             .property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
-            .register(AcademicoExceptionMapper.class);
+            .register(AcademicoExceptionMapper.class)
+            .register(AutoScanIoCFeature.class);
 	}
 
     @Test
