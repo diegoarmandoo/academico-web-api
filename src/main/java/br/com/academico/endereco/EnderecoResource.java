@@ -3,6 +3,8 @@ package br.com.academico.endereco;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,7 +29,9 @@ public class EnderecoResource {
     
     private Endereco endereco;
 
-    private EnderecoService enderecoService = new EnderecoService();
+    @Inject
+    @Named("enderecoservicedefault")
+    private IEnderecoService enderecoService;
 
     //////////////////
     //Operações CRUD//
