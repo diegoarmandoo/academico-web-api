@@ -8,10 +8,10 @@ import org.jvnet.hk2.annotations.Contract;
 public interface IEnderecoService {
     
     public List<Endereco> listar();
-    public Endereco recuperar(int id);
-	public int criar(Endereco endereco);
-	public Endereco atualizar(int id, Endereco endereco);
-	public int deletar(int id);
-	public Endereco mudarStatus(int id, StatusEndereco status);
+    public Endereco recuperar(Long id);
+	public Long criar(Endereco endereco);
+	public Endereco atualizar(Long id, Endereco endereco);
+	public Long deletar(Long id);
+	public Endereco mudarStatus(Long id, StatusEndereco status);
 
 }
