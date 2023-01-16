@@ -1,0 +1,116 @@
+CREATE DATABASE "academico-db"
+  WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'Portuguese_Brazil.1252'
+       LC_CTYPE = 'Portuguese_Brazil.1252'
+       CONNECTION LIMIT = -1;
+
+//ENDERECOS//
+
+CREATE SEQUENCE public.enderecos_id_seq
+    INCREMENT 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    START 1
+    CACHE 1;
+
+CREATE TABLE public.enderecos
+(
+  id integer NOT NULL DEFAULT nextval('enderecos_id_seq'::regclass),
+  cep integer NOT NULL,
+  rua character varying NOT NULL,
+  bairro character varying NOT NULL,
+  cidade character varying NOT NULL,
+  estado character varying,
+  CONSTRAINT enderecos_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+
+//PROFESSORES//
+
+CREATE TABLE public.professores
+(
+  matricula integer NOT NULL,
+  nome character varying NOT NULL,
+  sobrenome character varying NOT NULL,
+  idade integer NOT NULL,
+  naturalidade character varying NOT NULL,
+  sexo "char" NOT NULL,
+  cpf character varying NOT NULL,
+  salario money NOT NULL,
+  carga_horaria integer NOT NULL,
+  id_endereco integer NOT NULL,
+  CONSTRAINT professores_pkey PRIMARY KEY (matricula),
+  CONSTRAINT id_endereco_fkey FOREIGN KEY (id_endereco)
+      REFERENCES public.enderecos (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+
+CREATE INDEX fki_id_endereco_fkey
+  ON public.professores
+  USING btree
+  (id_endereco);
+
+//ALUNOS//
+
+CREATE TABLE public.alunos
+(
+  matricula integer NOT NULL,
+  nome character varying NOT NULL,
+  sobrenome character varying NOT NULL,
+  idade integer NOT NULL,
+  naturalidade character varying NOT NULL,
+  sexo "char" NOT NULL,
+  cpf character varying NOT NULL,
+  curso character varying NOT NULL,
+  matriculado boolean NOT NULL,
+  aprovado boolean NOT NULL,
+  id_endereco integer NOT NULL,
+  CONSTRAINT alunos_pkey PRIMARY KEY (matricula),
+  CONSTRAINT id_endereco_fkey FOREIGN KEY (id_endereco)
+      REFERENCES public.enderecos (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+
+CREATE INDEX fki_id_endereco_alunos_fkey
+  ON public.alunos
+  USING btree
+  (id_endereco);
+
+//NOTAS//
+
+CREATE SEQUENCE public.notas_id_seq
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 2147483647
+    CACHE 1;	
+	
+CREATE TABLE public.notas
+(
+  id integer NOT NULL DEFAULT nextval('notas_id_seq'::regclass),
+  valor real NOT NULL,
+  peso integer NOT NULL,
+  matricula_aluno integer NOT NULL,
+  CONSTRAINT notas_pkey PRIMARY KEY (id),
+  CONSTRAINT matricula_aluno_fkey FOREIGN KEY (matricula_aluno)
+      REFERENCES public.alunos (matricula) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+
+CREATE INDEX fki_matricula_aluno_fkey
+  ON public.notas
+  USING btree
+  (matricula_aluno)    
