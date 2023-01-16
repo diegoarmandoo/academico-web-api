@@ -23,6 +23,7 @@ CREATE TABLE public.enderecos
   bairro character varying NOT NULL,
   cidade character varying NOT NULL,
   estado character varying,
+  status character varying(10) NOT NULL,
   CONSTRAINT enderecos_pkey PRIMARY KEY (id)
 )
 WITH (
