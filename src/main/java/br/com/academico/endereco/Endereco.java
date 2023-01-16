@@ -7,14 +7,26 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+@Entity(name = "enderecos")
+@Table(name = "enderecos")
 public class Endereco implements Serializable {
 
     // Atributos de Instância ou do Objeto
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "endereco_generator")
+	@SequenceGenerator(name="endereco_generator", sequenceName = "public.enderecos_id_seq", allocationSize = 1)   
+    private Long id;
 
     @Range(min=10000000, max=99999999, message = "O atributo CEP deve ser inteiro e ter no mínimo 8 algarismos.")
-    private int CEP;
+    private Long CEP;
 
     @Size(min=5, max=50, message = "O atributo rua deve conter no mínimo 5 e no máximo 50 caracteres.")
     @NotEmpty(message = "O atributo rua não pode ser nulo nem vazio.")
@@ -27,19 +39,19 @@ public class Endereco implements Serializable {
 
     // Gets e Sets
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getCEP() {
+    public Long getCEP() {
         return CEP;
     }
 
-    public void setCEP(int cEP) {
+    public void setCEP(Long cEP) {
         CEP = cEP;
     }
 
@@ -89,13 +101,22 @@ public class Endereco implements Serializable {
         this.status = StatusEndereco.ATIVO;
     }
 
-    public Endereco(int CEP, String rua, String bairro, String cidade, String estado) {
+    public Endereco(Long CEP, String rua, String bairro, String cidade, String estado) {
         this.CEP = CEP;
         this.rua = rua;
         this.bairro = bairro;
         this.cidade = cidade;
         this.estado = estado;
         this.status = StatusEndereco.ATIVO;
+    }
+
+    public Endereco(Long CEP, String rua, String bairro, String cidade, String estado, StatusEndereco status) {
+        this.CEP = CEP;
+        this.rua = rua;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.status = status;
     }
 
     // Métodos
