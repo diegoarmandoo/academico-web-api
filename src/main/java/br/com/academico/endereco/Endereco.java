@@ -7,7 +7,10 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Range;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +38,9 @@ public class Endereco implements Serializable {
     private String bairro;
     private String cidade;
     private String estado;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private StatusEndereco status;
 
     // Gets e Sets
