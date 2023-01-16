@@ -7,6 +7,7 @@
         *bairro : character varying <<not null>>
         *cidade : character varying <<not null>>
         *estado : character varying <<not null>>
+        *status : character varying (10) <<not null>>
         --
         id : <<primary key>>
     }
