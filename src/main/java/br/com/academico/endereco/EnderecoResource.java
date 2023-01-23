@@ -28,10 +28,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class EnderecoResource {
     
     private Endereco endereco;
+    
+    private IEnderecoService enderecoService;
 
     @Inject
-    @Named("enderecoservicedefault")
-    private IEnderecoService enderecoService;
+    public EnderecoResource(@Named("enderecoservicedefault") IEnderecoService enderecoService){
+        this.enderecoService = enderecoService;
+    }
 
     //////////////////
     //Operações CRUD//
